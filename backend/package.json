@@ -1,0 +1,17 @@
+{
+  "name": "odin-blog-api-backend",
+  "version": "0.0.0",
+  "engines": {
+    "node": "16.2.0"
+  },
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "jjjjonathan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
