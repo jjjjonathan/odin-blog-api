@@ -9,7 +9,7 @@ const morgan = require('morgan');
 const compression = require('compression');
 const helmet = require('helmet');
 
-// const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/users');
 
 const app = express();
 
@@ -29,7 +29,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(compression());
 
-// app.use('/api/users', usersRouter);
+app.use('/api/users', usersRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello world');
