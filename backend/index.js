@@ -8,12 +8,14 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const compression = require('compression');
 const helmet = require('helmet');
+const cors = require('cors');
 
 const usersRouter = require('./routes/users');
 
 const app = express();
 
 app.use(helmet());
+app.use(cors());
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -27,6 +29,7 @@ db.once('open', () => {
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(compression());
 
 app.use('/api/users', usersRouter);
