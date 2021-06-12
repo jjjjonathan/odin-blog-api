@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
@@ -35,5 +36,12 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.plugin(uniqueValidator);
+
+UserSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    delete ret.__v;
+    delete ret.passwordHash;
+  },
+});
 
 module.exports = mongoose.model('User', UserSchema);
