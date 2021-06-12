@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
 const User = require('../models/user');
-// const { body, validationResult } = require('express-validator');
+const Post = require('../models/post');
 
 const router = express.Router();
 
@@ -52,11 +52,20 @@ router.post('/login', async (req, res) => {
 });
 
 router.get(
-  '/protected',
+  '/:id/posts',
   passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    console.log(req.user);
-    return res.status(200).send('YAY! this is a protected Route');
+  async (req, res) => {
+    if (req.user._id.toString() !== req.params.id) {
+      // Not logged in as requested user
+      return res.sendStatus(403);
+    }
+    // All good, get all posts by user
+    const posts = await Post.find({ user: req.params.id }).populate({
+      path: 'comments',
+      select: 'body timestamp user -post',
+      populate: { path: 'user', select: 'username email' },
+    });
+    res.json(posts);
   },
 );
 
