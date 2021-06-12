@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
     path: 'user',
     select: 'username email admin',
   });
-  console.log(posts);
   res.json(posts);
 });
 
@@ -20,6 +19,8 @@ router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    if (!req.user.admin) return res.sendStatus(403);
+
     const { title, body, published } = req.body;
     const user = req.user._id;
     const timestamp = new Date();
@@ -34,6 +35,26 @@ router.post(
 
     await post.save();
     res.json(post);
+  },
+);
+
+// Get single blog post
+router.get('/:id', async (req, res) => {
+  const post = await Post.findById(req.params.id).populate({
+    path: 'user',
+    select: 'username email admin',
+  });
+  res.json(post);
+});
+
+// Delete blog post
+router.delete(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (!req.user.admin) return res.sendStatus(403);
+    await Post.findByIdAndDelete(req.params.id);
+    return res.sendStatus(204);
   },
 );
 

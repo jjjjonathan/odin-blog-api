@@ -24,4 +24,10 @@ const PostSchema = new mongoose.Schema({
   },
 });
 
+PostSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    delete ret.__v;
+  },
+});
+
 module.exports = mongoose.model('Post', PostSchema);

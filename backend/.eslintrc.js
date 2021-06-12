@@ -13,5 +13,6 @@ module.exports = {
     'object-curly-newline': 'off',
     'consistent-return': 'off',
     'no-underscore-dangle': 'off',
+    'no-param-reassign': 'off',
   },
 };
