@@ -23,11 +23,13 @@ const App = () => {
   }, []);
 
   return (
-    <Container>
+    <div>
       <Header />
-      <BlogList blogs={blogs} />
-      <p style={{ color: 'red' }}>{error}</p>
-    </Container>
+      <Container className="mt-4" style={{ maxWidth: 600 }}>
+        <BlogList blogs={blogs} />
+        <p style={{ color: 'red' }}>{error}</p>
+      </Container>
+    </div>
   );
 };
 
