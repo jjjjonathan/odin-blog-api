@@ -2,15 +2,22 @@ const express = require('express');
 const passport = require('passport');
 
 const Post = require('../models/post');
+const Comment = require('../models/comment');
 
 const router = express.Router();
 
 // Get all blog posts
 router.get('/', async (req, res) => {
-  const posts = await Post.find({}).populate({
-    path: 'user',
-    select: 'username email admin',
-  });
+  const posts = await Post.find({})
+    .populate({
+      path: 'user',
+      select: 'username email admin',
+    })
+    .populate({
+      path: 'comments',
+      select: 'body timestamp user -post',
+      populate: { path: 'user', select: 'username email' },
+    });
   res.json(posts);
 });
 
@@ -57,5 +64,33 @@ router.delete(
     return res.sendStatus(204);
   },
 );
+
+// Add comment to blog post
+router.post(
+  '/:id/comments',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { body } = req.body;
+    const timestamp = new Date();
+    const user = req.user._id;
+    const post = req.params.id;
+
+    const comment = new Comment({ body, post, timestamp, user });
+    await comment.save();
+    res.json(comment);
+  },
+);
+
+// Get all comments from blog post
+router.get('/:id/comments', async (req, res) => {
+  const comments = await Comment.find(
+    { post: req.params.id },
+    '-post',
+  ).populate({
+    path: 'user',
+    select: 'username email admin',
+  });
+  res.json(comments);
+});
 
 module.exports = router;
