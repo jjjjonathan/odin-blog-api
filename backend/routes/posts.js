@@ -8,7 +8,7 @@ const router = express.Router();
 
 // Get all blog posts
 router.get('/', async (req, res) => {
-  const posts = await Post.find({})
+  const posts = await Post.find({ published: true })
     .populate({
       path: 'user',
       select: 'username email admin',
