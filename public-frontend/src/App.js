@@ -104,29 +104,27 @@ const App = () => {
     })
       .then((response) => response.json())
       .then(({ body, timestamp, user, _id, post }) => {
-        console.log(blogs);
-        console.log({ body, timestamp, user, _id });
-
-        // setBlogs(
-        //   blogs.map((blog) => {
-        //     if (blog._id === post) {
-        //       return {
-        //         comments: [
-        //           ...blog.comments,
-        //           {
-        //             body,
-        //             timestamp,
-        //             user,
-        //             _id,
-        //           },
-        //         ],
-        //         ...blog,
-        //       };
-        //     } else {
-        //       return blog;
-        //     }
-        //   }),
-        // );
+        setBlogs(
+          blogs.map((blog) => {
+            if (blog._id === post) {
+              console.log('made it?');
+              return {
+                ...blog,
+                comments: [
+                  ...blog.comments,
+                  {
+                    body,
+                    timestamp,
+                    user,
+                    _id,
+                  },
+                ],
+              };
+            } else {
+              return blog;
+            }
+          }),
+        );
       })
       .catch((error) => {
         console.error(error);
