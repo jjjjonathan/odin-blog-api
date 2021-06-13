@@ -1,33 +1,51 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
+import { Form, Button, Card } from 'react-bootstrap';
 import * as yup from 'yup';
 
 const NewCommentForm = () => {
+  const handleAddComment = (values) => {
+    console.log(values);
+  };
+
   const validationSchema = yup.object().shape({
     comment: yup.string().required('Comment field is required'),
   });
 
   return (
-    <Formik
-      initialValues={{ comment: '' }}
-      validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      }}
-    >
-      {({ isSubmitting }) => (
-        <Form>
-          <Field type="textarea" name="comment" />
-          <ErrorMessage name="comment" component="div" />
-          <button type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
-        </Form>
-      )}
-    </Formik>
+    <Card>
+      <Card.Header>
+        <h5 className="mb-0">Add new comment</h5>
+      </Card.Header>
+      <Card.Body>
+        <Formik
+          initialValues={{ comment: '' }}
+          validationSchema={validationSchema}
+          onSubmit={handleAddComment}
+        >
+          {({ isSubmitting, errors }) => (
+            <FormikForm noValidate>
+              <Form.Group>
+                <Field
+                  type="textarea"
+                  name="comment"
+                  as={(props) => <Form.Control as="textarea" {...props} />}
+                  isInvalid={!!errors.comment}
+                />
+                <ErrorMessage
+                  name="comment"
+                  component={Form.Control.Feedback}
+                  type="invalid"
+                />
+              </Form.Group>
+              <Button type="submit" disabled={isSubmitting}>
+                Add comment
+              </Button>
+            </FormikForm>
+          )}
+        </Formik>
+      </Card.Body>
+    </Card>
   );
 };
 

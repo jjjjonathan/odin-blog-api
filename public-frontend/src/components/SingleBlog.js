@@ -9,9 +9,12 @@ const SingleBlog = ({ blog }) => {
 
   return (
     <div className="mb-5">
-      <Link to={`/posts/${blog._id}`}>
-        <h2 className="text-decoration-none">{blog.title}</h2>
-        <p className="border-bottom mb-3 pb-2 text-muted text-decoration-none">
+      <Link
+        to={`/posts/${blog._id}`}
+        className="text-decoration-none text-dark"
+      >
+        <h2>{blog.title}</h2>
+        <p className="border-bottom mb-3 pb-2 text-muted">
           by {blog.user.username}
         </p>
       </Link>
