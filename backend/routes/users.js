@@ -43,13 +43,32 @@ router.post('/login', async (req, res) => {
       return res.status(200).json({
         message: 'Successfully logged in',
         token,
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        admin: user.admin,
       });
     }
   } catch (error) {
     // User not found
     res.status(401).json({ message: 'Authorization failed', error });
   }
+  res.status(401).json({ message: 'Authorization failed' });
 });
+
+router.get(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    if (req.user._id.toString() !== req.params.id) {
+      // Not logged in as requested user
+      return res.sendStatus(403);
+    }
+    // All good, get user info
+    const user = await User.findById(req.params.id, '-posts -comments');
+    res.json(user);
+  },
+);
 
 router.get(
   '/:id/posts',

@@ -4,12 +4,16 @@ import { Card } from 'react-bootstrap';
 import { formatDistanceToNow } from 'date-fns';
 import NewCommentForm from './NewCommentForm';
 
-const PostPage = ({ blogs }) => {
+const PostPage = ({ blogs, user, handleAddComment }) => {
   const { id } = useParams();
   const blog = blogs.find((blog) => id === blog._id);
 
   const formattedTime = (time) => {
     return formatDistanceToNow(new Date(time), { addSuffix: true });
+  };
+
+  const passPostIdThroughAddComment = ({ comment }) => {
+    handleAddComment({ comment, postId: id });
   };
 
   return blog ? (
@@ -27,7 +31,10 @@ const PostPage = ({ blogs }) => {
           </Card.Footer>
         </Card>
       ))}
-      <NewCommentForm />
+      <NewCommentForm
+        user={user}
+        handleAddComment={passPostIdThroughAddComment}
+      />
     </div>
   ) : null;
 };

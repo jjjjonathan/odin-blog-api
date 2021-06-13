@@ -77,7 +77,12 @@ router.post(
 
     const comment = new Comment({ body, post, timestamp, user });
     await comment.save();
-    res.json(comment);
+
+    const populatedComment = await comment
+      .populate('user', '-posts -comments')
+      .execPopulate();
+
+    res.json(populatedComment);
   },
 );
 

@@ -2,31 +2,25 @@ import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { Link, NavLink } from 'react-router-dom';
 
-const Header = ({ user }) => {
+const Header = ({ user, handleLogout }) => {
   return (
     <Navbar bg="light" expand="sm">
       <Link to="/">
-        <Navbar.Brand>odinblog</Navbar.Brand>
+        <Navbar.Brand className="text-info">odinblog</Navbar.Brand>
       </Link>
       <Navbar.Toggle aria-controls="navbar-nav" />
-      <Navbar.Collapse id="navbar-nav" className="justify-content-between">
-        <Nav variant="pills">
-          <Nav.Item>
-            <Nav.Link as={NavLink} exact to="/">
-              Home
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
-        <Nav variant="pills">
+      <Navbar.Collapse id="navbar-nav" className="justify-content-end">
+        <Nav>
           {user ? (
             <>
               <Nav.Item>
-                <Navbar.Text>Logged in as _____</Navbar.Text>
+                <Navbar.Text className="mr-2">
+                  Logged in as{' '}
+                  <span className="text-dark">{user.username}</span>
+                </Navbar.Text>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link as={NavLink} to="/logout">
-                  Logout
-                </Nav.Link>
+                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </Nav.Item>
             </>
           ) : (
