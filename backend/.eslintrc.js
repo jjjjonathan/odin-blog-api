@@ -14,5 +14,6 @@ module.exports = {
     'consistent-return': 'off',
     'no-underscore-dangle': 'off',
     'no-param-reassign': 'off',
+    'operator-linebreak': 'off',
   },
 };

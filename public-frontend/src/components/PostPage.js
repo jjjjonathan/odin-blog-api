@@ -1,10 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Card } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import { formatDistanceToNow } from 'date-fns';
 import NewCommentForm from './NewCommentForm';
 
-const PostPage = ({ blogs, user, handleAddComment }) => {
+const PostPage = ({ blogs, user, handleAddComment, handleDeleteComment }) => {
   const { id } = useParams();
   const blog = blogs.find((blog) => id === blog._id);
 
@@ -26,8 +26,22 @@ const PostPage = ({ blogs, user, handleAddComment }) => {
       {blog.comments.map((comment) => (
         <Card key={comment._id} className="mb-4">
           <Card.Body>{comment.body}</Card.Body>
-          <Card.Footer className="text-muted">
-            Posted by {comment.user.username} {formattedTime(comment.timestamp)}
+          <Card.Footer className="d-flex justify-content-between align-items-center">
+            <small className="text-muted">
+              Posted by {comment.user.username}{' '}
+              {formattedTime(comment.timestamp)}
+            </small>
+            {user && comment.user._id === user._id ? (
+              <Button
+                variant="outline-danger"
+                size="sm"
+                onClick={handleDeleteComment}
+                data-commentid={comment._id}
+                data-postid={blog._id}
+              >
+                Delete
+              </Button>
+            ) : null}
           </Card.Footer>
         </Card>
       ))}

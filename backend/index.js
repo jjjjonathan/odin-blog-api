@@ -13,6 +13,7 @@ const cors = require('cors');
 
 const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
+const commentsRouter = require('./routes/comments');
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use(compression());
 
 app.use('/api/users', usersRouter);
 app.use('/api/posts', postsRouter);
+app.use('/api/comments', commentsRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello world');

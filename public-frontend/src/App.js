@@ -107,7 +107,6 @@ const App = () => {
         setBlogs(
           blogs.map((blog) => {
             if (blog._id === post) {
-              console.log('made it?');
               return {
                 ...blog,
                 comments: [
@@ -132,8 +131,39 @@ const App = () => {
       });
   };
 
+  const handleDeleteComment = (event) => {
+    const commentId = event.target.dataset.commentid;
+    const postId = event.target.dataset.postid;
+
+    fetch(`${baseUrl}/api/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(() => {
+      setBlogs(
+        blogs.map((blog) => {
+          if (blog._id === postId) {
+            return {
+              ...blog,
+              comments: blog.comments.filter((comment) => {
+                if (comment._id === commentId) {
+                  return false;
+                } else {
+                  return true;
+                }
+              }),
+            };
+          } else {
+            return blog;
+          }
+        }),
+      );
+    });
+  };
+
   return (
-    <div>
+    <>
       <Header user={user} handleLogout={handleLogout} />
       <Container className="mt-4" style={{ maxWidth: 600 }}>
         <Messages
@@ -151,6 +181,7 @@ const App = () => {
               blogs={blogs}
               user={user}
               handleAddComment={handleAddComment}
+              handleDeleteComment={handleDeleteComment}
             />
           </Route>
           <Route exact path="/">
@@ -158,7 +189,7 @@ const App = () => {
           </Route>
         </Switch>
       </Container>
-    </div>
+    </>
   );
 };
 
