@@ -140,26 +140,31 @@ const App = () => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then(() => {
-      setBlogs(
-        blogs.map((blog) => {
-          if (blog._id === postId) {
-            return {
-              ...blog,
-              comments: blog.comments.filter((comment) => {
-                if (comment._id === commentId) {
-                  return false;
-                } else {
-                  return true;
-                }
-              }),
-            };
-          } else {
-            return blog;
-          }
-        }),
-      );
-    });
+    })
+      .then(() => {
+        setBlogs(
+          blogs.map((blog) => {
+            if (blog._id === postId) {
+              return {
+                ...blog,
+                comments: blog.comments.filter((comment) => {
+                  if (comment._id === commentId) {
+                    return false;
+                  } else {
+                    return true;
+                  }
+                }),
+              };
+            } else {
+              return blog;
+            }
+          }),
+        );
+      })
+      .catch((error) => {
+        console.error(error);
+        setErrorMessage(error);
+      });
   };
 
   return (

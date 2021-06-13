@@ -22,7 +22,9 @@ const PostPage = ({ blogs, user, handleAddComment, handleDeleteComment }) => {
       <p className="border-bottom mb-4 pb-3 lead">by {blog.user.username}</p>
       <p>{blog.body}</p>
       <p className="text-muted">Posted {formattedTime(blog.timestamp)}</p>
-      <h4 className="mt-5 mb-4">Comments</h4>
+      <h4 className="mt-5 mb-4" id="comments">
+        Comments
+      </h4>
       {blog.comments.map((comment) => (
         <Card key={comment._id} className="mb-4">
           <Card.Body>{comment.body}</Card.Body>

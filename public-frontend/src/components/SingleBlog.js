@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import { formatDistanceToNow } from 'date-fns';
 
 const SingleBlog = ({ blog }) => {
@@ -19,9 +20,16 @@ const SingleBlog = ({ blog }) => {
         </p>
       </Link>
       <p>{blog.body}</p>
-      <p className="text-muted">
-        {formattedTime()} | {blog.comments.length} Comments
-      </p>
+      <div className="d-flex justify-content-between">
+        <p className="text-muted">{formattedTime()}</p>
+        <HashLink
+          to={`/posts/${blog._id}#comments`}
+          className="text-muted"
+          smooth
+        >
+          {blog.comments.length} Comments
+        </HashLink>
+      </div>
     </div>
   );
 };
