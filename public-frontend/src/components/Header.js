@@ -24,11 +24,18 @@ const Header = ({ user, handleLogout }) => {
               </Nav.Item>
             </>
           ) : (
-            <Nav.Item>
-              <Nav.Link as={NavLink} to="/login">
-                Login
-              </Nav.Link>
-            </Nav.Item>
+            <>
+              <Nav.Item>
+                <Nav.Link as={NavLink} to="/signup">
+                  Sign Up
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link as={NavLink} to="/login">
+                  Login
+                </Nav.Link>
+              </Nav.Item>
+            </>
           )}
         </Nav>
       </Navbar.Collapse>

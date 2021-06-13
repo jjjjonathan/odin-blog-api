@@ -5,6 +5,7 @@ import { Container } from 'react-bootstrap';
 import Header from './components/Header';
 import Home from './components/Home';
 import PostPage from './components/PostPage';
+import SignUpPage from './components/SignUpPage';
 import SignInPage from './components/SignInPage';
 import Messages from './components/Messages';
 
@@ -53,6 +54,10 @@ const App = () => {
         setErrorMessage(error);
       });
   }, []);
+
+  const handleSignUp = (values) => {
+    console.log(values);
+  };
 
   const handleLogin = (values) => {
     fetch(`${baseUrl}/api/users/login`, {
@@ -178,6 +183,9 @@ const App = () => {
           setSuccessMessage={setSuccessMessage}
         />
         <Switch>
+          <Route path="/signup">
+            <SignUpPage handleSignUp={handleSignUp} />
+          </Route>
           <Route path="/login">
             <SignInPage handleLogin={handleLogin} />
           </Route>

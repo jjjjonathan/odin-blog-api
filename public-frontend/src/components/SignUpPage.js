@@ -3,8 +3,9 @@ import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 
-const SignInPage = ({ handleLogin }) => {
+const SignUpPage = ({ handleSignUp }) => {
   const validationSchema = yup.object().shape({
+    username: yup.string().required('Username is required'),
     email: yup
       .string()
       .email('Please enter a valid email address')
@@ -14,11 +15,11 @@ const SignInPage = ({ handleLogin }) => {
 
   return (
     <>
-      <h1 className="mb-4">Log in</h1>
+      <h1 className="mb-4">Sign Up</h1>
       <Formik
-        initialValues={{ email: '', password: '' }}
+        initialValues={{ username: '', email: '', password: '' }}
         validationSchema={validationSchema}
-        onSubmit={handleLogin}
+        onSubmit={handleSignUp}
       >
         {({ isSubmitting, errors }) => (
           <FormikForm noValidate>
@@ -38,6 +39,21 @@ const SignInPage = ({ handleLogin }) => {
             </Form.Group>
 
             <Form.Group>
+              <Form.Label>Username</Form.Label>
+              <Field
+                type="text"
+                name="username"
+                as={Form.Control}
+                isInvalid={!!errors.username}
+              />
+              <ErrorMessage
+                name="username"
+                component={Form.Control.Feedback}
+                type="invalid"
+              />
+            </Form.Group>
+
+            <Form.Group>
               <Form.Label>Password</Form.Label>
               <Field
                 type="password"
@@ -51,8 +67,9 @@ const SignInPage = ({ handleLogin }) => {
                 type="invalid"
               />
             </Form.Group>
+
             <Button type="submit" disabled={isSubmitting}>
-              Log In
+              Submit
             </Button>
           </FormikForm>
         )}
@@ -61,4 +78,4 @@ const SignInPage = ({ handleLogin }) => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage;
