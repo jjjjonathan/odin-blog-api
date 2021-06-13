@@ -67,7 +67,7 @@ const App = () => {
           <Route path="/posts/:id">
             <PostPage blogs={blogs} />
           </Route>
-          <Route path="/">
+          <Route exact path="/">
             <Home blogs={blogs} />
           </Route>
         </Switch>

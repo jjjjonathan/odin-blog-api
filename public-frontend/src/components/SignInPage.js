@@ -13,48 +13,51 @@ const SignInPage = ({ handleLogin }) => {
   });
 
   return (
-    <Formik
-      initialValues={{ email: '', password: '' }}
-      validationSchema={validationSchema}
-      onSubmit={handleLogin}
-    >
-      {({ isSubmitting, errors }) => (
-        <FormikForm noValidate>
-          <Form.Group>
-            <Form.Label>Email address</Form.Label>
-            <Field
-              type="email"
-              name="email"
-              as={Form.Control}
-              isInvalid={!!errors.email}
-            />
-            <ErrorMessage
-              name="email"
-              component={Form.Control.Feedback}
-              type="invalid"
-            />
-          </Form.Group>
+    <>
+      <h1 className="mb-4">Log in</h1>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        validationSchema={validationSchema}
+        onSubmit={handleLogin}
+      >
+        {({ isSubmitting, errors }) => (
+          <FormikForm noValidate>
+            <Form.Group>
+              <Form.Label>Email address</Form.Label>
+              <Field
+                type="email"
+                name="email"
+                as={Form.Control}
+                isInvalid={!!errors.email}
+              />
+              <ErrorMessage
+                name="email"
+                component={Form.Control.Feedback}
+                type="invalid"
+              />
+            </Form.Group>
 
-          <Form.Group>
-            <Form.Label>Password</Form.Label>
-            <Field
-              type="password"
-              name="password"
-              as={Form.Control}
-              isInvalid={!!errors.password}
-            />
-            <ErrorMessage
-              name="password"
-              component={Form.Control.Feedback}
-              type="invalid"
-            />
-          </Form.Group>
-          <Button type="submit" disabled={isSubmitting}>
-            Submit
-          </Button>
-        </FormikForm>
-      )}
-    </Formik>
+            <Form.Group>
+              <Form.Label>Password</Form.Label>
+              <Field
+                type="password"
+                name="password"
+                as={Form.Control}
+                isInvalid={!!errors.password}
+              />
+              <ErrorMessage
+                name="password"
+                component={Form.Control.Feedback}
+                type="invalid"
+              />
+            </Form.Group>
+            <Button type="submit" disabled={isSubmitting}>
+              Submit
+            </Button>
+          </FormikForm>
+        )}
+      </Formik>
+    </>
   );
 };
 
