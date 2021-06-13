@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
 import Header from './components/Header';
-import BlogList from './components/BlogList';
+import Home from './components/Home';
+import PostPage from './components/PostPage';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -23,13 +25,19 @@ const App = () => {
   }, []);
 
   return (
-    <div>
+    <Router>
       <Header />
       <Container className="mt-4" style={{ maxWidth: 600 }}>
-        <BlogList blogs={blogs} />
-        <p style={{ color: 'red' }}>{error}</p>
+        <Switch>
+          <Route path="/posts/:id">
+            <PostPage blogs={blogs} />
+          </Route>
+          <Route path="/">
+            <Home blogs={blogs} error={error} />
+          </Route>
+        </Switch>
       </Container>
-    </div>
+    </Router>
   );
 };
 
