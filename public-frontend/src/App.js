@@ -63,8 +63,30 @@ const App = () => {
       });
   }, []);
 
-  const handleSignUp = (values) => {
-    console.log(values);
+  const handleSignUp = async (values) => {
+    fetch(`${baseUrl}/api/users/signup`, {
+      mode: 'cors',
+      method: 'POST',
+      body: JSON.stringify({ ...values, admin: false }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((newUser) => {
+        history.push('/login');
+        setSuccessMessage(
+          `Successfully created user ${newUser.username}! Please login`,
+        );
+      })
+      .catch((error) => {
+        console.error(error);
+        if (error.message === 'Failed to fetch') {
+          setErrorMessage('Failed to create user');
+        } else {
+          setErrorMessage(error.message);
+        }
+      });
   };
 
   // function is async so that formik will automatically setSubmitting to false on completion
