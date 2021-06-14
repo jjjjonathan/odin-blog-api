@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, Form as FormikForm, ErrorMessage } from 'formik';
+import { Link } from 'react-router-dom';
 import { Form, Button, Card } from 'react-bootstrap';
 import * as yup from 'yup';
 
@@ -43,8 +44,9 @@ const NewCommentForm = ({ user, handleAddComment }) => {
             )}
           </Formik>
         ) : (
-          <p className="text-danger mb-0">
-            You must be logged in to add a new comment!
+          <p className="mb-0">
+            <Link to="/signup">Sign up</Link> or <Link to="/login">log in</Link>{' '}
+            to add a new comment!
           </p>
         )}
       </Card.Body>

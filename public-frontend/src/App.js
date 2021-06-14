@@ -38,7 +38,11 @@ const App = () => {
         })
         .catch((error) => {
           console.error(error);
-          setErrorMessage(error);
+          if (error.message === 'Failed to fetch') {
+            setErrorMessage('Failed to load data from server');
+          } else {
+            setErrorMessage(error.message);
+          }
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,8 +54,12 @@ const App = () => {
       .then((response) => response.json())
       .then((fetchedBlogs) => setBlogs(fetchedBlogs))
       .catch((error) => {
-        console.error(error);
-        setErrorMessage(error);
+        console.log({ error });
+        if (error.message === 'Failed to fetch') {
+          setErrorMessage('Failed to load data from server');
+        } else {
+          setErrorMessage(error.message);
+        }
       });
   }, []);
 
@@ -59,7 +67,8 @@ const App = () => {
     console.log(values);
   };
 
-  const handleLogin = (values) => {
+  // function is async so that formik will automatically setSubmitting to false on completion
+  const handleLogin = async (values) => {
     fetch(`${baseUrl}/api/users/login`, {
       method: 'POST',
       body: JSON.stringify(values),
@@ -87,7 +96,11 @@ const App = () => {
       })
       .catch((error) => {
         console.error(error);
-        setErrorMessage(error);
+        if (error.message === 'Failed to fetch') {
+          setErrorMessage('Failed to load data from server');
+        } else {
+          setErrorMessage(error.message);
+        }
       });
   };
 
@@ -98,7 +111,7 @@ const App = () => {
     setUser();
   };
 
-  const handleAddComment = ({ comment, postId }) => {
+  const handleAddComment = ({ comment, postId }, formikBag) => {
     fetch(`${baseUrl}/api/posts/${postId}/comments`, {
       method: 'POST',
       body: JSON.stringify({ body: comment }),
@@ -129,10 +142,16 @@ const App = () => {
             }
           }),
         );
+
+        formikBag.resetForm();
       })
       .catch((error) => {
         console.error(error);
-        setErrorMessage(error);
+        if (error.message === 'Failed to fetch') {
+          setErrorMessage('Failed to add comment; error connecting to server');
+        } else {
+          setErrorMessage(error.message);
+        }
       });
   };
 

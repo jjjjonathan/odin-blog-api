@@ -12,8 +12,9 @@ const PostPage = ({ blogs, user, handleAddComment, handleDeleteComment }) => {
     return formatDistanceToNow(new Date(time), { addSuffix: true });
   };
 
-  const passPostIdThroughAddComment = ({ comment }) => {
-    handleAddComment({ comment, postId: id });
+  // function is async so that formik will automatically setSubmitting to false on completion
+  const passPostIdThroughAddComment = async ({ comment }, formikBag) => {
+    handleAddComment({ comment, postId: id }, formikBag);
   };
 
   return blog ? (
