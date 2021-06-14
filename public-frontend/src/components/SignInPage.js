@@ -3,7 +3,11 @@ import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
 import { Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 
-const SignInPage = ({ handleLogin }) => {
+import useClearMessage from '../hooks/useClearMessage';
+
+const SignInPage = ({ handleLogin, setSuccess, setError }) => {
+  useClearMessage(setSuccess, setError);
+
   const validationSchema = yup.object().shape({
     email: yup
       .string()

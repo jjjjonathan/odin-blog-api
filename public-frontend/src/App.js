@@ -75,9 +75,11 @@ const App = () => {
       .then((response) => response.json())
       .then((newUser) => {
         history.push('/login');
-        setSuccessMessage(
-          `Successfully created user ${newUser.username}! Please login`,
-        );
+        setTimeout(() => {
+          setSuccessMessage(
+            `Successfully created user ${newUser.username}! Please login`,
+          );
+        }, 100);
       })
       .catch((error) => {
         console.error(error);
@@ -111,7 +113,9 @@ const App = () => {
           setUser({ _id, username, email, admin });
 
           history.push('/');
-          setSuccessMessage(`Successfully logged in as ${username}!`);
+          setTimeout(() => {
+            setSuccessMessage(`Successfully logged in as ${username}!`);
+          }, 100);
         } else {
           setErrorMessage('Invalid username or password');
         }
@@ -225,10 +229,18 @@ const App = () => {
         />
         <Switch>
           <Route path="/signup">
-            <SignUpPage handleSignUp={handleSignUp} />
+            <SignUpPage
+              handleSignUp={handleSignUp}
+              setSuccess={setSuccessMessage}
+              setError={setErrorMessage}
+            />
           </Route>
           <Route path="/login">
-            <SignInPage handleLogin={handleLogin} />
+            <SignInPage
+              handleLogin={handleLogin}
+              setSuccess={setSuccessMessage}
+              setError={setErrorMessage}
+            />
           </Route>
           <Route path="/posts/:id">
             <PostPage
@@ -236,10 +248,16 @@ const App = () => {
               user={user}
               handleAddComment={handleAddComment}
               handleDeleteComment={handleDeleteComment}
+              setSuccess={setSuccessMessage}
+              setError={setErrorMessage}
             />
           </Route>
           <Route exact path="/">
-            <Home blogs={blogs} />
+            <Home
+              blogs={blogs}
+              setSuccess={setSuccessMessage}
+              setError={setErrorMessage}
+            />
           </Route>
         </Switch>
       </Container>

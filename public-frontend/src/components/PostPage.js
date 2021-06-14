@@ -4,7 +4,18 @@ import { Card, Button } from 'react-bootstrap';
 import { formatDistanceToNow } from 'date-fns';
 import NewCommentForm from './NewCommentForm';
 
-const PostPage = ({ blogs, user, handleAddComment, handleDeleteComment }) => {
+import useClearMessage from '../hooks/useClearMessage';
+
+const PostPage = ({
+  blogs,
+  user,
+  handleAddComment,
+  handleDeleteComment,
+  setSuccess,
+  setError,
+}) => {
+  useClearMessage(setSuccess, setError);
+
   const { id } = useParams();
   const blog = blogs.find((blog) => id === blog._id);
 
