@@ -6,8 +6,10 @@ import {
   List,
   ListItem,
   ListItemText,
+  Link,
+  makeStyles,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Link as RouterLink } from 'react-router-dom';
 import { drawerWidth } from '../variables';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,11 +37,13 @@ const NavDrawer = ({ handleLogout }) => {
       }}
     >
       <Typography align="center" variant="h6" className={classes.title}>
-        odinblog admin
+        <Link component={RouterLink} to="/">
+          odinblog admin
+        </Link>
       </Typography>
       <Divider />
       <List>
-        <ListItem button>
+        <ListItem button component={RouterLink} to="/posts">
           <ListItemText>Posts</ListItemText>
         </ListItem>
       </List>

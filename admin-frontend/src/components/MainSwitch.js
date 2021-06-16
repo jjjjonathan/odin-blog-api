@@ -3,7 +3,9 @@ import { Switch, Route } from 'react-router-dom';
 import { Container, makeStyles } from '@material-ui/core';
 import { drawerWidth } from '../variables';
 
+import PostPage from './PostPage';
 import PostList from './PostList';
+import Home from './Home';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -18,8 +20,14 @@ const MainSwitch = ({ blogs }) => {
   return (
     <Container className={classes.container}>
       <Switch>
-        <Route exact path="/">
+        <Route path="/posts/:id">
+          <PostPage posts={blogs} />
+        </Route>
+        <Route path="/posts">
           <PostList posts={blogs} />
+        </Route>
+        <Route exact path="/">
+          <Home />
         </Route>
       </Switch>
     </Container>
