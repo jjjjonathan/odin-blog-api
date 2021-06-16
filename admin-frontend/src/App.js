@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
 
 import LoginPage from './components/LoginPage';
 import NavDrawer from './components/NavDrawer';
+import Toast from './components/Toast';
+import MainSwitch from './components/MainSwitch';
 
-const baseUrl = 'http://localhost:5000';
+import { baseUrl } from './variables';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [token, setToken] = useState('');
   const [user, setUser] = useState();
+  const [message, setMessage] = useState('');
 
   // Effect hook for fetching current user object from stored token
   useEffect(() => {
-    const storedToken = localStorage.getItem('odinBlogPublicToken');
-    const storedUserId = localStorage.getItem('odinBlogPublicUserId');
+    const storedToken = localStorage.getItem('odinBlogAdminToken');
+    const storedUserId = localStorage.getItem('odinBlogAdminUserId');
 
     if (storedToken && storedUserId && !token && !user) {
       fetch(`${baseUrl}/api/users/${storedUserId}`, {
@@ -30,9 +32,9 @@ const App = () => {
         .catch((error) => {
           console.error(error);
           if (error.message === 'Failed to fetch') {
-            // TODO ('Failed to load data from server');
+            setMessage('Failed to load data from server');
           } else {
-            // TODO (error.message);
+            setMessage(error.message);
           }
         });
     }
@@ -55,39 +57,45 @@ const App = () => {
 
           setToken(loginInfo.token);
 
-          localStorage.setItem('odinBlogPublicToken', loginInfo.token);
-          localStorage.setItem('odinBlogPublicUserId', _id);
+          localStorage.setItem('odinBlogAdminToken', loginInfo.token);
+          localStorage.setItem('odinBlogAdminUserId', _id);
 
           setUser({ _id, username, email, admin });
 
-          // TODO (`Successfully logged in as ${username}!`);
+          setMessage(`Successfully logged in as ${username}!`);
         } else {
-          // TODO ('Invalid username or password');
+          setMessage('Invalid username or password');
         }
       })
       .catch((error) => {
         console.error(error);
         if (error.message === 'Failed to fetch') {
-          // TODO ('Failed to load data from server');
+          setMessage('Failed to load data from server');
         } else {
-          // TODO (error.message);
+          setMessage(error.message);
         }
       });
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('odinBlogPublicToken');
-    localStorage.removeItem('odinBlogPublicUserId');
+    localStorage.removeItem('odinBlogAdminToken');
+    localStorage.removeItem('odinBlogAdminUserId');
     setToken('');
+    setMessage(`Logged out ${user.username}!`);
     setUser();
   };
 
   return user ? (
     <>
       <NavDrawer handleLogout={handleLogout} />
+      <Toast message={message} />
+      <MainSwitch />
     </>
   ) : (
-    <LoginPage handleLogin={handleLogin} />
+    <>
+      <LoginPage handleLogin={handleLogin} />
+      <Toast message={message} />
+    </>
   );
 };
 

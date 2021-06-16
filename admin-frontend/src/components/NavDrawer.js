@@ -8,8 +8,7 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
-const drawerWidth = 240;
+import { drawerWidth } from '../variables';
 
 const useStyles = makeStyles((theme) => ({
   title: {
