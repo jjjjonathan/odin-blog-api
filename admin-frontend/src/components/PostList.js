@@ -1,20 +1,33 @@
 import React from 'react';
-import { Container, Typography, makeStyles } from '@material-ui/core';
-import { drawerWidth } from '../variables';
+import { Typography } from '@material-ui/core';
+import { DataGrid } from '@material-ui/data-grid';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    marginLeft: drawerWidth,
+const columns = [
+  { field: 'post', headerName: 'Post', width: 300 },
+  { field: 'date', type: 'date', headerName: 'Date', width: 200 },
+  {
+    field: 'published',
+    headerName: 'Published?',
+    type: 'boolean',
+    width: 150,
   },
-}));
+];
 
-const PostList = () => {
-  const classes = useStyles();
+const PostList = ({ posts }) => {
+  const rows = posts.map((post, index) => ({
+    id: index + 1,
+    post: post.title,
+    date: post.timestamp,
+    published: post.published,
+  }));
 
   return (
-    <Container className={classes.container}>
-      <Typography>POST LIST HERE don't you know it bitchezz</Typography>
-    </Container>
+    <>
+      <Typography variant="h5">Posts</Typography>
+      <div style={{ width: 650, height: 500 }}>
+        <DataGrid rows={rows} columns={columns} pageSize={6} />
+      </div>
+    </>
   );
 };
 

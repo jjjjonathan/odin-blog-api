@@ -41,6 +41,29 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Effect hook for fetching blog posts
+  useEffect(() => {
+    if (user) {
+      fetch(`${baseUrl}/api/users/${user._id}/posts`, {
+        mode: 'cors',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((fetchedBlogs) => setBlogs(fetchedBlogs))
+        .catch((error) => {
+          console.log({ error });
+          if (error.message === 'Failed to fetch') {
+            setMessage('Failed to load data from server');
+          } else {
+            setMessage(error.message);
+          }
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   // function is async so that formik will automatically setSubmitting to false on completion
   const handleLogin = async (values) => {
     fetch(`${baseUrl}/api/users/login`, {
@@ -89,7 +112,7 @@ const App = () => {
     <>
       <NavDrawer handleLogout={handleLogout} />
       <Toast message={message} />
-      <MainSwitch />
+      <MainSwitch blogs={blogs} />
     </>
   ) : (
     <>
