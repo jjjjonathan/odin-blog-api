@@ -75,9 +75,16 @@ const App = () => {
       });
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('odinBlogPublicToken');
+    localStorage.removeItem('odinBlogPublicUserId');
+    setToken('');
+    setUser();
+  };
+
   return user ? (
     <>
-      <NavDrawer />
+      <NavDrawer handleLogout={handleLogout} />
     </>
   ) : (
     <LoginPage handleLogin={handleLogin} />

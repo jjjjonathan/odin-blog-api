@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavDrawer = () => {
+const NavDrawer = ({ handleLogout }) => {
   const classes = useStyles();
 
   return (
@@ -46,7 +46,7 @@ const NavDrawer = () => {
       </List>
       <Divider />
       <List>
-        <ListItem button>
+        <ListItem button onClick={handleLogout}>
           <ListItemText>Log Out</ListItemText>
         </ListItem>
       </List>
