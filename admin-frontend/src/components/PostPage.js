@@ -10,6 +10,7 @@ const PostPage = ({ posts }) => {
 
   const validationSchema = yup.object().shape({
     title: yup.string().required('Title is required'),
+    body: yup.string().required('Post cannot be empty!'),
   });
 
   const handleSubmitPostEdit = console.log;
@@ -17,6 +18,7 @@ const PostPage = ({ posts }) => {
   const formik = useFormik({
     initialValues: {
       title: '',
+      body: '',
     },
     validationSchema: validationSchema,
     onSubmit: handleSubmitPostEdit,
@@ -25,6 +27,7 @@ const PostPage = ({ posts }) => {
   useEffect(() => {
     if (post) {
       formik.setFieldValue('title', post.title);
+      formik.setFieldValue('body', post.body);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post]);
@@ -36,6 +39,7 @@ const PostPage = ({ posts }) => {
       </Typography>
       <form noValidate onSubmit={formik.handleSubmit}>
         <TextField
+          style={{ marginBottom: 20 }}
           variant="outlined"
           fullWidth
           id="title"
@@ -46,6 +50,20 @@ const PostPage = ({ posts }) => {
           error={formik.touched.title && !!formik.errors.title}
           helperText={formik.touched.title && formik.errors.title}
         />
+        <TextField
+          variant="outlined"
+          multiline
+          rows="10"
+          fullWidth
+          id="body"
+          name="body"
+          placeholder="Write your post here!"
+          value={formik.values.body}
+          onChange={formik.handleChange}
+          error={formik.touched.body && !!formik.errors.body}
+          helperText={formik.touched.body && formik.errors.body}
+        />
+        <Button type="submit">Submit</Button>
       </form>
     </div>
   ) : null;
