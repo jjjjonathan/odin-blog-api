@@ -111,6 +111,32 @@ const App = () => {
     setUser();
   };
 
+  const handleNewPost = (values) => {
+    fetch(`${baseUrl}/api/posts`, {
+      method: 'POST',
+      body: JSON.stringify(values),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((newPost) => {
+        setBlogs([...blogs, newPost]);
+
+        history.push('/posts');
+        setMessage(`Successfully created post ${newPost.title}`);
+      })
+      .catch((error) => {
+        console.error(error);
+        if (error.message === 'Failed to fetch') {
+          setMessage('Failed to save new post');
+        } else {
+          setMessage(error.message);
+        }
+      });
+  };
+
   const handleEditPost = (values, id) => {
     fetch(`${baseUrl}/api/posts/${id}`, {
       method: 'PUT',
@@ -145,8 +171,39 @@ const App = () => {
       });
   };
 
-  const handleNewPost = (values) => {
-    console.log(values);
+  const handleDeletePost = (id) => {
+    fetch(`${baseUrl}/api/posts/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.status === 204) {
+          setBlogs(
+            blogs.filter((blog) => {
+              if (blog._id === id) {
+                return false;
+              } else {
+                return true;
+              }
+            }),
+          );
+
+          setMessage(`Successfully deleted post!`);
+          history.push('/posts');
+        } else {
+          setMessage('Failed to delete post');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        if (error.message === 'Failed to fetch') {
+          setMessage('Failed to delete post');
+        } else {
+          setMessage(error.message);
+        }
+      });
   };
 
   return user ? (
@@ -157,6 +214,7 @@ const App = () => {
         blogs={blogs}
         handleEditPost={handleEditPost}
         handleNewPost={handleNewPost}
+        handleDeletePost={handleDeletePost}
       />
     </>
   ) : (

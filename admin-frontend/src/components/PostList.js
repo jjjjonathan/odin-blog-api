@@ -10,7 +10,7 @@ const formatDate = (date) => {
 
 const columns = [
   { field: 'post', headerName: 'Post', width: 300 },
-  { field: 'date', type: 'date', headerName: 'Date', width: 200 },
+  { field: 'date', type: 'date', headerName: 'Last Updated', width: 200 },
   {
     field: 'published',
     headerName: 'Published?',

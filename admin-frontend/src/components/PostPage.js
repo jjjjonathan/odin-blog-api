@@ -10,7 +10,7 @@ import {
   TextField,
 } from '@material-ui/core';
 
-const PostPage = ({ newPost, posts, handleSubmitPost }) => {
+const PostPage = ({ newPost, posts, handleSubmitPost, handleDeletePost }) => {
   const { id } = useParams();
   const post = posts?.find((post) => post._id === id);
 
@@ -52,6 +52,21 @@ const PostPage = ({ newPost, posts, handleSubmitPost }) => {
   }, [newPost]);
 
   const pageTitle = newPost ? 'New Post' : 'Edit Post';
+
+  const deleteButton = () => {
+    if (newPost) return null;
+    return (
+      <Button
+        style={{ marginTop: 50 }}
+        variant="contained"
+        color="secondary"
+        size="small"
+        onClick={() => handleDeletePost(id)}
+      >
+        Delete this post
+      </Button>
+    );
+  };
 
   return (
     <div style={{ maxWidth: 600 }}>
@@ -100,6 +115,7 @@ const PostPage = ({ newPost, posts, handleSubmitPost }) => {
           Submit
         </Button>
       </form>
+      {deleteButton()}
     </div>
   );
 };

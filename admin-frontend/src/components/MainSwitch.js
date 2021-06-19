@@ -14,7 +14,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MainSwitch = ({ blogs, handleEditPost, handleNewPost }) => {
+const MainSwitch = ({
+  blogs,
+  handleEditPost,
+  handleNewPost,
+  handleDeletePost,
+}) => {
   const classes = useStyles();
 
   return (
@@ -24,7 +29,11 @@ const MainSwitch = ({ blogs, handleEditPost, handleNewPost }) => {
           <PostPage newPost={true} handleSubmitPost={handleNewPost} />
         </Route>
         <Route path="/posts/:id">
-          <PostPage posts={blogs} handleSubmitPost={handleEditPost} />
+          <PostPage
+            posts={blogs}
+            handleSubmitPost={handleEditPost}
+            handleDeletePost={handleDeletePost}
+          />
         </Route>
         <Route path="/posts">
           <PostList posts={blogs} />
