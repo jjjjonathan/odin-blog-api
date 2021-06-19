@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import LoginPage from './components/LoginPage';
 import NavDrawer from './components/NavDrawer';
@@ -8,6 +9,8 @@ import MainSwitch from './components/MainSwitch';
 import { baseUrl } from './variables';
 
 const App = () => {
+  const history = useHistory();
+
   const [blogs, setBlogs] = useState([]);
   const [token, setToken] = useState('');
   const [user, setUser] = useState();
@@ -108,11 +111,47 @@ const App = () => {
     setUser();
   };
 
+  const handleEditPost = (values, id) => {
+    fetch(`${baseUrl}/api/posts/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(values),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((editedPost) => {
+        setBlogs(
+          blogs.map((blog) => {
+            if (blog._id === id) {
+              console.log('editedpost');
+              return editedPost;
+            } else {
+              console.log('blog');
+              return blog;
+            }
+          }),
+        );
+
+        history.push('/posts');
+        setMessage(`Successfully updated post ${editedPost.title}`);
+      })
+      .catch((error) => {
+        console.error(error);
+        if (error.message === 'Failed to fetch') {
+          setMessage('Failed to edit post');
+        } else {
+          setMessage(error.message);
+        }
+      });
+  };
+
   return user ? (
     <>
       <NavDrawer handleLogout={handleLogout} />
       <Toast message={message} />
-      <MainSwitch blogs={blogs} />
+      <MainSwitch blogs={blogs} handleEditPost={handleEditPost} />
     </>
   ) : (
     <>

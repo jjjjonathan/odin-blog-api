@@ -10,16 +10,18 @@ import {
   TextField,
 } from '@material-ui/core';
 
-const PostPage = ({ posts }) => {
+const PostPage = ({ posts, handleEditPost }) => {
   const { id } = useParams();
   const post = posts.find((post) => post._id === id);
+
+  const passIdThruHandleEditPost = (values) => {
+    return handleEditPost(values, id);
+  };
 
   const validationSchema = yup.object().shape({
     title: yup.string().required('Title is required'),
     body: yup.string().required('Post cannot be empty!'),
   });
-
-  const handleSubmitPostEdit = console.log;
 
   const formik = useFormik({
     initialValues: {
@@ -28,7 +30,7 @@ const PostPage = ({ posts }) => {
       published: false,
     },
     validationSchema: validationSchema,
-    onSubmit: handleSubmitPostEdit,
+    onSubmit: passIdThruHandleEditPost,
   });
 
   useEffect(() => {

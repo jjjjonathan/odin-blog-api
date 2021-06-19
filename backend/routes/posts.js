@@ -54,6 +54,36 @@ router.get('/:id', async (req, res) => {
   res.json(post);
 });
 
+// Update blog post
+router.put(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { title, body, published } = req.body;
+    const _id = req.params.id;
+    const user = req.user._id;
+    const timestamp = new Date();
+
+    const post = new Post({
+      title,
+      body,
+      published,
+      user,
+      timestamp,
+      _id,
+    });
+
+    await Post.findByIdAndUpdate(_id, post);
+    const populatedPost = await Post.findById(_id).populate({
+      path: 'comments',
+      select: 'body timestamp user -post',
+      populate: { path: 'user', select: 'username email' },
+    });
+
+    res.json(populatedPost);
+  },
+);
+
 // Delete blog post
 router.delete(
   '/:id',
