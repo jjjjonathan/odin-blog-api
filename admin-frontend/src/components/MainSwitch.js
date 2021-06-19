@@ -14,14 +14,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MainSwitch = ({ blogs, handleEditPost }) => {
+const MainSwitch = ({ blogs, handleEditPost, handleNewPost }) => {
   const classes = useStyles();
 
   return (
     <Container className={classes.container}>
       <Switch>
+        <Route path="/posts/new">
+          <PostPage newPost={true} handleSubmitPost={handleNewPost} />
+        </Route>
         <Route path="/posts/:id">
-          <PostPage posts={blogs} handleEditPost={handleEditPost} />
+          <PostPage posts={blogs} handleSubmitPost={handleEditPost} />
         </Route>
         <Route path="/posts">
           <PostList posts={blogs} />

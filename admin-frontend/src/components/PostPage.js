@@ -10,12 +10,12 @@ import {
   TextField,
 } from '@material-ui/core';
 
-const PostPage = ({ posts, handleEditPost }) => {
+const PostPage = ({ newPost, posts, handleSubmitPost }) => {
   const { id } = useParams();
-  const post = posts.find((post) => post._id === id);
+  const post = posts?.find((post) => post._id === id);
 
-  const passIdThruHandleEditPost = (values) => {
-    return handleEditPost(values, id);
+  const passIdThruSubmitPost = (values) => {
+    return handleSubmitPost(values, id);
   };
 
   const validationSchema = yup.object().shape({
@@ -30,11 +30,11 @@ const PostPage = ({ posts, handleEditPost }) => {
       published: false,
     },
     validationSchema: validationSchema,
-    onSubmit: passIdThruHandleEditPost,
+    onSubmit: passIdThruSubmitPost,
   });
 
   useEffect(() => {
-    if (post) {
+    if (post && !newPost) {
       formik.setFieldValue('title', post.title);
       formik.setFieldValue('body', post.body);
       formik.setFieldValue('published', post.published);
@@ -42,10 +42,21 @@ const PostPage = ({ posts, handleEditPost }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post]);
 
-  return post ? (
+  useEffect(() => {
+    if (newPost) {
+      formik.setFieldValue('title', '');
+      formik.setFieldValue('body', '');
+      formik.setFieldValue('published', false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newPost]);
+
+  const pageTitle = newPost ? 'New Post' : 'Edit Post';
+
+  return (
     <div style={{ maxWidth: 600 }}>
       <Typography variant="h5" style={{ marginBottom: 30 }}>
-        Edit Post
+        {pageTitle}
       </Typography>
       <form noValidate onSubmit={formik.handleSubmit}>
         <TextField
@@ -90,7 +101,7 @@ const PostPage = ({ posts, handleEditPost }) => {
         </Button>
       </form>
     </div>
-  ) : null;
+  );
 };
 
 export default PostPage;

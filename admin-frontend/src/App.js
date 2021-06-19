@@ -125,10 +125,8 @@ const App = () => {
         setBlogs(
           blogs.map((blog) => {
             if (blog._id === id) {
-              console.log('editedpost');
               return editedPost;
             } else {
-              console.log('blog');
               return blog;
             }
           }),
@@ -147,11 +145,19 @@ const App = () => {
       });
   };
 
+  const handleNewPost = (values) => {
+    console.log(values);
+  };
+
   return user ? (
     <>
       <NavDrawer handleLogout={handleLogout} />
       <Toast message={message} />
-      <MainSwitch blogs={blogs} handleEditPost={handleEditPost} />
+      <MainSwitch
+        blogs={blogs}
+        handleEditPost={handleEditPost}
+        handleNewPost={handleNewPost}
+      />
     </>
   ) : (
     <>

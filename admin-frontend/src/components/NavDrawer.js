@@ -43,6 +43,9 @@ const NavDrawer = ({ handleLogout }) => {
       </Typography>
       <Divider />
       <List>
+        <ListItem button component={RouterLink} to="/posts/new">
+          <ListItemText>Add New Post</ListItemText>
+        </ListItem>
         <ListItem button component={RouterLink} to="/posts">
           <ListItemText>Posts</ListItemText>
         </ListItem>
