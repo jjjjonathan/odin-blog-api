@@ -11,14 +11,16 @@ const CommentsPage = ({ comments }) => {
   const columns = [
     { field: 'comment', headerName: 'Comment', width: 300 },
     { field: 'user', headerName: 'Username', width: 150 },
-    { field: 'date', type: 'date', headerName: 'Last Updated', width: 200 },
+    { field: 'post', headerName: 'Post', width: 200 },
+    { field: 'date', type: 'date', headerName: 'Posted', width: 200 },
   ];
 
-  const rows = posts.map((post) => ({
-    id: post._id,
-    post: post.title,
-    date: formatDate(post.timestamp),
-    published: post.published,
+  const rows = comments.map((comment) => ({
+    id: comment._id,
+    comment: comment.body,
+    user: comment.user.username,
+    post: comment.post.title,
+    date: formatDate(comment.timestamp),
   }));
 
   return (
@@ -26,13 +28,13 @@ const CommentsPage = ({ comments }) => {
       <Typography variant="h5" style={{ marginBottom: 30 }}>
         Manage Comments
       </Typography>
-      <div style={{ width: 650, height: 500 }}>
+      <div style={{ width: 850, height: 550 }}>
         <DataGrid
           rows={rows}
           columns={columns}
-          pageSize={6}
+          pageSize={8}
           disableSelectionOnClick
-          onCellClick={onCellClick}
+          onCellClick={console.log}
         />
       </div>
     </>

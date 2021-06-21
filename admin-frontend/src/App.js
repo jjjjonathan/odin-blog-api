@@ -68,6 +68,29 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  // Effect hook for fetching comments
+  useEffect(() => {
+    if (user) {
+      fetch(`${baseUrl}/api/comments`, {
+        mode: 'cors',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((fetchedComments) => setComments(fetchedComments))
+        .catch((error) => {
+          console.log({ error });
+          if (error.message === 'Failed to fetch') {
+            setMessage('Failed to load data from server');
+          } else {
+            setMessage(error.message);
+          }
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   // function is async so that formik will automatically setSubmitting to false on completion
   const handleLogin = async (values) => {
     fetch(`${baseUrl}/api/users/login`, {
