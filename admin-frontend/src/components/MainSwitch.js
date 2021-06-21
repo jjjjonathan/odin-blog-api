@@ -21,6 +21,7 @@ const MainSwitch = ({
   handleNewPost,
   handleDeletePost,
   comments,
+  handleDeleteComment,
 }) => {
   const classes = useStyles();
 
@@ -28,7 +29,10 @@ const MainSwitch = ({
     <Container className={classes.container}>
       <Switch>
         <Route path="/comments">
-          <CommentsPage comments={comments} />
+          <CommentsPage
+            comments={comments}
+            handleDeleteComment={handleDeleteComment}
+          />
         </Route>
         <Route path="/posts/new">
           <PostPage newPost={true} handleSubmitPost={handleNewPost} />

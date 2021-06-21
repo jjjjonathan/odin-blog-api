@@ -230,6 +230,40 @@ const App = () => {
       });
   };
 
+  const handleDeleteComment = (id) => {
+    fetch(`${baseUrl}/api/comments/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.status === 204) {
+          setComments(
+            comments.filter((comment) => {
+              if (comment._id === id) {
+                return false;
+              } else {
+                return true;
+              }
+            }),
+          );
+
+          setMessage(`Successfully deleted comment!`);
+        } else {
+          setMessage('Failed to delete comment');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        if (error.message === 'Failed to fetch') {
+          setMessage('Failed to delete post');
+        } else {
+          setMessage(error.message);
+        }
+      });
+  };
+
   return user ? (
     <>
       <NavDrawer handleLogout={handleLogout} />
@@ -240,6 +274,7 @@ const App = () => {
         handleNewPost={handleNewPost}
         handleDeletePost={handleDeletePost}
         comments={comments}
+        handleDeleteComment={handleDeleteComment}
       />
     </>
   ) : (
