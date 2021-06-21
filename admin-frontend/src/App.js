@@ -5,6 +5,7 @@ import LoginPage from './components/LoginPage';
 import NavDrawer from './components/NavDrawer';
 import Toast from './components/Toast';
 import MainSwitch from './components/MainSwitch';
+import LoadingPage from './components/LoadingPage';
 
 import { baseUrl } from './variables';
 
@@ -13,9 +14,12 @@ const App = () => {
 
   const [blogs, setBlogs] = useState([]);
   const [comments, setComments] = useState([]);
+
   const [token, setToken] = useState('');
   const [user, setUser] = useState();
+
   const [message, setMessage] = useState('');
+  const [loadingUser, setLoadingUser] = useState(false);
 
   // Effect hook for fetching current user object from stored token
   useEffect(() => {
@@ -23,6 +27,8 @@ const App = () => {
     const storedUserId = localStorage.getItem('odinBlogAdminUserId');
 
     if (storedToken && storedUserId && !token && !user) {
+      setLoadingUser(true);
+
       fetch(`${baseUrl}/api/users/${storedUserId}`, {
         headers: {
           Authorization: `Bearer ${storedToken}`,
@@ -32,8 +38,10 @@ const App = () => {
         .then((fetchedUser) => {
           setToken(storedToken);
           setUser(fetchedUser);
+          setLoadingUser(false);
         })
         .catch((error) => {
+          setLoadingUser(false);
           console.error(error);
           if (error.message === 'Failed to fetch') {
             setMessage('Failed to load data from server');
@@ -264,25 +272,39 @@ const App = () => {
       });
   };
 
-  return user ? (
-    <>
-      <NavDrawer handleLogout={handleLogout} />
-      <Toast message={message} />
-      <MainSwitch
-        blogs={blogs}
-        handleEditPost={handleEditPost}
-        handleNewPost={handleNewPost}
-        handleDeletePost={handleDeletePost}
-        comments={comments}
-        handleDeleteComment={handleDeleteComment}
-      />
-    </>
-  ) : (
-    <>
-      <LoginPage handleLogin={handleLogin} />
-      <Toast message={message} />
-    </>
-  );
+  if (user) {
+    // Logged in
+    return (
+      <>
+        <NavDrawer handleLogout={handleLogout} />
+        <Toast message={message} />
+        <MainSwitch
+          blogs={blogs}
+          handleEditPost={handleEditPost}
+          handleNewPost={handleNewPost}
+          handleDeletePost={handleDeletePost}
+          comments={comments}
+          handleDeleteComment={handleDeleteComment}
+        />
+      </>
+    );
+  } else if (loadingUser) {
+    // Loading user from saved token
+    return (
+      <>
+        <LoadingPage />
+        <Toast message={message} />
+      </>
+    );
+  } else {
+    // Not logged in
+    return (
+      <>
+        <LoginPage handleLogin={handleLogin} />
+        <Toast message={message} />
+      </>
+    );
+  }
 };
 
 export default App;
