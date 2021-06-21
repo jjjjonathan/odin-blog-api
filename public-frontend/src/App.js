@@ -9,7 +9,8 @@ import SignUpPage from './components/SignUpPage';
 import SignInPage from './components/SignInPage';
 import Messages from './components/Messages';
 
-const baseUrl = 'http://localhost:5000';
+// const baseUrl = 'http://localhost:5000';
+const baseUrl = 'https://immense-shelf-57554.herokuapp.com';
 
 const App = () => {
   const history = useHistory();

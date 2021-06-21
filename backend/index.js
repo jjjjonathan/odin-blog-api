@@ -22,7 +22,17 @@ const jwtStrategy = require('./strategies/jwt');
 
 passport.use(jwtStrategy);
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        'script-src': ["'self'", "'unsafe-inline'"],
+      },
+    },
+  }),
+);
+
 app.use(cors());
 
 mongoose.connect(process.env.MONGODB_URI, {
