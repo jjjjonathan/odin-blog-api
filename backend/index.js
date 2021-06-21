@@ -8,6 +8,7 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const compression = require('compression');
+const path = require('path');
 const helmet = require('helmet');
 const cors = require('cors');
 
@@ -38,6 +39,8 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(compression());
+
+// app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/users', usersRouter);
 app.use('/api/posts', postsRouter);
