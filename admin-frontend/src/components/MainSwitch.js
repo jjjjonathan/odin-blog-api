@@ -6,6 +6,7 @@ import { drawerWidth } from '../variables';
 import PostPage from './PostPage';
 import PostList from './PostList';
 import Home from './Home';
+import CommentsPage from './CommentsPage';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -19,12 +20,16 @@ const MainSwitch = ({
   handleEditPost,
   handleNewPost,
   handleDeletePost,
+  comments,
 }) => {
   const classes = useStyles();
 
   return (
     <Container className={classes.container}>
       <Switch>
+        <Route path="/comments">
+          <CommentsPage comments={comments} />
+        </Route>
         <Route path="/posts/new">
           <PostPage newPost={true} handleSubmitPost={handleNewPost} />
         </Route>

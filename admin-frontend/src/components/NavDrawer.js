@@ -49,6 +49,9 @@ const NavDrawer = ({ handleLogout }) => {
         <ListItem button component={RouterLink} to="/posts">
           <ListItemText>Posts</ListItemText>
         </ListItem>
+        <ListItem button component={RouterLink} to="/comments">
+          <ListItemText>Manage Comments</ListItemText>
+        </ListItem>
       </List>
       <Divider />
       <List>

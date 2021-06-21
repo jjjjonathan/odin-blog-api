@@ -12,6 +12,7 @@ const App = () => {
   const history = useHistory();
 
   const [blogs, setBlogs] = useState([]);
+  const [comments, setComments] = useState([]);
   const [token, setToken] = useState('');
   const [user, setUser] = useState();
   const [message, setMessage] = useState('');
@@ -215,6 +216,7 @@ const App = () => {
         handleEditPost={handleEditPost}
         handleNewPost={handleNewPost}
         handleDeletePost={handleDeletePost}
+        comments={comments}
       />
     </>
   ) : (
