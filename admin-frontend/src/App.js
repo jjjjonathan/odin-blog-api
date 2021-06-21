@@ -101,6 +101,7 @@ const App = () => {
 
   // function is async so that formik will automatically setSubmitting to false on completion
   const handleLogin = async (values) => {
+    setLoadingUser(true);
     fetch(`${baseUrl}/api/users/login`, {
       method: 'POST',
       body: JSON.stringify(values),
@@ -121,11 +122,14 @@ const App = () => {
           setUser({ _id, username, email, admin });
 
           setMessage(`Successfully logged in as ${username}!`);
+          setLoadingUser(false);
         } else {
           setMessage('Invalid username or password');
+          setLoadingUser(false);
         }
       })
       .catch((error) => {
+        setLoadingUser(false);
         console.error(error);
         if (error.message === 'Failed to fetch') {
           setMessage('Failed to load data from server');
